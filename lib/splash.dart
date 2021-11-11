@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quotes_app/daily_quote.dart';
 import 'package:quotes_app/favourite.dart';
+import 'package:quotes_app/test.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,17 +45,15 @@ class Quote extends StatelessWidget {
             Row(
               children: [
                 SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyApp()));
-                    },
-                    icon: Icon(Icons.alarm, size: 5),
-                    label: Text(""),
-                  ),
-                )
+                    height: 20,
+                    width: 20,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        loadData();
+                        print(favoQuotesSaved);
+                      },
+                      child: Text(""),
+                    ))
               ],
             ),
             SizedBox(height: 49),
@@ -86,16 +85,9 @@ class Quote extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton.icon(
               onPressed: () {
-                //if (favoQuotes.isEmpty) {
-                //new AlertDialog(
-                //title: Text("Sie haben noch keine Favoriten"),
-                // );
-                //} else {
+                loadData();
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => QuoteFavo()));
-                loadData();
-                print(favoQuotes);
-                //}
               },
               icon: Icon(
                 Icons.favorite,

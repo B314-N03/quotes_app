@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:quotes_app/splash.dart';
 
-//final favoQuotes = [];
-//final favoQuotesAsString = favoQuotes.toString();
 List<String> favoQuotes = [];
+List<String> favoQuotesSaved = [];
 
 class Favo extends StatelessWidget {
   @override
@@ -21,10 +19,6 @@ class Favo extends StatelessWidget {
 
 class QuoteFavo extends StatefulWidget {
   const QuoteFavo({Key? key}) : super(key: key);
-  static Future init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-  }
-
   @override
   _State createState() => _State();
 }
@@ -79,7 +73,6 @@ class _State extends State<QuoteFavo> {
               SizedBox(height: 50),
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 SizedBox(height: 100),
-                //ListView(),
               ]),
             ],
           ),
@@ -87,17 +80,17 @@ class _State extends State<QuoteFavo> {
   }
 }
 
-void saveData(String pQuote) async {
-  await QuoteFavo.init();
-  favoQuotes.add(pQuote);
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setStringList("Favo", favoQuotes);
-}
-
 Future<List> loadData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  List favoQuotes = prefs.getStringList("Favo")!.cast<String>();
-  return favoQuotes;
+  favoQuotesSaved = prefs.getStringList("Favo") ?? [];
+  return favoQuotesSaved;
+}
+
+void saveData(String pQuote) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  favoQuotes.add(pQuote);
+  prefs.setStringList('Quotes', favoQuotes);
+  print(favoQuotes);
 }
 
 Widget _buildRow(String _randomQuote) {

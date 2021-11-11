@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:quotes_app/splash.dart';
 import 'package:quotes_app/favourite.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Quo extends StatelessWidget {
   @override
@@ -16,9 +17,23 @@ class Quo extends StatelessWidget {
   }
 }
 
-class DailyQuote extends StatelessWidget {
+class DailyQuote extends StatefulWidget {
+  const DailyQuote({Key? key}) : super(key: key);
+  @override
+  _DailyQuoteState createState() => _DailyQuoteState();
+}
+
+class _DailyQuoteState extends State<DailyQuote> {
   // ignore: non_constant_identifier_names
   final _randomQuote = randomChoice(quotes);
+  void saveData(String pQuote) {
+    setState(() async {
+      favoQuotes.add(pQuote);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setStringList('FavoQuotes', favoQuotes);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
