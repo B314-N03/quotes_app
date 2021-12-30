@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quotes_app/daily_quote.dart';
 import 'package:quotes_app/favourite.dart';
-import 'package:quotes_app/test.dart';
+import 'functions.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,22 +41,7 @@ class Quote extends StatelessWidget {
                     )))
               ],
             ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        loadData();
-                        print(favoQuotesSaved);
-                      },
-                      child: Text(""),
-                    ))
-              ],
-            ),
-            SizedBox(height: 49),
+            SizedBox(height: 80),
             ElevatedButton.icon(
               icon: Icon(
                 Icons.auto_fix_high,
@@ -87,7 +72,7 @@ class Quote extends StatelessWidget {
               onPressed: () {
                 loadData();
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => QuoteFavo()));
+                    MaterialPageRoute(builder: (context) => const QuoteFavo()));
               },
               icon: Icon(
                 Icons.favorite,
@@ -114,8 +99,6 @@ class Quote extends StatelessWidget {
     );
   }
 }
-
-void displayData() {}
 
 final quotes = [
   "The greatest glory in living\n lies not in never falling, but \nin rising every time we fall.\n -Nelson Mandela",

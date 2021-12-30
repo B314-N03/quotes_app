@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:quotes_app/splash.dart';
 import 'package:quotes_app/favourite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'functions.dart';
 
 class Quo extends StatelessWidget {
   @override
@@ -26,11 +26,11 @@ class DailyQuote extends StatefulWidget {
 class _DailyQuoteState extends State<DailyQuote> {
   // ignore: non_constant_identifier_names
   final _randomQuote = randomChoice(quotes);
-  void saveData(String pQuote) {
-    setState(() async {
+  void saveData(String pQuote) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
       favoQuotes.add(pQuote);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setStringList('FavoQuotes', favoQuotes);
+      prefs.setStringList('Quote', favoQuotes);
     });
   }
 
