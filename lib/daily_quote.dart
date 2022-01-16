@@ -3,7 +3,6 @@ import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:quotes_app/splash.dart';
 import 'package:quotes_app/favourite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'functions.dart';
 
 class Quo extends StatelessWidget {
   @override
@@ -24,14 +23,28 @@ class DailyQuote extends StatefulWidget {
 }
 
 class _DailyQuoteState extends State<DailyQuote> {
-  // ignore: non_constant_identifier_names
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) => getRandomQuote());
+  }
+
+  String getRandomQuote() {
+    String _randomQuote = randomChoice(quotes);
+    return _randomQuote;
+  }
+
+  // ignore: non_constant_identifier_namesg
   final _randomQuote = randomChoice(quotes);
   void saveData(String pQuote) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      favoQuotes.add(pQuote);
+    if (pQuote == "1") {
+      favoQuotes.remove(pQuote);
       prefs.setStringList('Quote', favoQuotes);
-    });
+    } else
+      setState(() {
+        favoQuotes.add(pQuote);
+        prefs.setStringList('Quote', favoQuotes);
+      });
   }
 
   @override
@@ -52,12 +65,7 @@ class _DailyQuoteState extends State<DailyQuote> {
                     alignment: Alignment.topLeft,
                     tooltip: 'Go back to the previous Page!',
                     icon: Icon(Icons.backspace),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyApp()),
-                      );
-                    }),
+                    onPressed: () {}),
                 SizedBox(width: 10),
                 Text("Back",
                     style: TextStyle(fontFamily: 'Quattrocento', fontSize: 24)),
@@ -73,7 +81,7 @@ class _DailyQuoteState extends State<DailyQuote> {
                     children: [
                       SizedBox(
                         width: 317,
-                        height: 100,
+                        height: 115,
                         child: Text(
                           '$_randomQuote',
                           style: TextStyle(
@@ -116,7 +124,7 @@ class _DailyQuoteState extends State<DailyQuote> {
             Image.asset(
               'assets/images/Sitting_by_tree.png',
               width: 400,
-              height: 310,
+              height: 110,
             )
           ],
         ),

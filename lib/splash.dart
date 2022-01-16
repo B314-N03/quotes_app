@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:quotes_app/daily_quote.dart';
-import 'package:quotes_app/favourite.dart';
+import 'favourite.dart';
+import 'daily_quote.dart';
 import 'functions.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class Splash extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Quotes App',
-      theme: ThemeData(),
-      home: Quote(),
-    );
-  }
+  State<Splash> createState() => _SplashState();
 }
 
-class Quote extends StatelessWidget {
+class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +18,7 @@ class Quote extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 80),
+            SizedBox(height: 150),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -42,60 +31,20 @@ class Quote extends StatelessWidget {
               ],
             ),
             SizedBox(height: 80),
-            ElevatedButton.icon(
-              icon: Icon(
-                Icons.auto_fix_high,
-                color: Colors.black,
-              ),
-              label: Text('Get a new Daily Quote',
-                  style: TextStyle(color: Colors.black)),
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Quo()));
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(227, 60),
-                primary: Colors.white,
-                shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(33.0),
-                ),
-              ),
-            ),
             SizedBox(height: 30),
             Image.asset(
               'assets/images/Undraw_walking_outside_re_56xo1.png',
               width: 500,
-              height: 250,
+              height: 350,
             ),
             SizedBox(height: 30),
-            ElevatedButton.icon(
-              onPressed: () {
-                loadData();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const QuoteFavo()));
-              },
-              icon: Icon(
-                Icons.favorite,
-                color: Colors.black,
-              ),
-              label: Text(
-                'List your favourite Quotes',
-                style: TextStyle(color: Colors.black),
-              ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(227, 60),
-                primary: Colors.white,
-                shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(33.0),
-                ),
-              ),
-            ),
             SizedBox(
               height: 10,
             ),
           ],
         ),
       ),
+      // bottomNavigationBar: Nav(),
     );
   }
 }

@@ -31,6 +31,9 @@ dependencies:
   flutter_svg: ^0.22.0
   dart_random_choice: ^0.1.0-nullsafety.0
   shared_preferences: ^2.0.8
+  bottom_navy_bar: ^6.0.0
+  http: ^0.13.4
+  curved_navigation_bar: ^1.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -47,7 +50,7 @@ flutter:
   assets:
     - assets/images/Undraw_walking_outside_re_56xo1.png
     - assets/images/Sitting_by_tree.png
-     
+    - assets/icons/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

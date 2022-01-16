@@ -1,8 +1,10 @@
+import 'package:quotes_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'functions.dart';
 import 'package:flutter/material.dart';
-import 'package:quotes_app/splash.dart';
+import 'package:quotes_app/main.dart';
 
+int delete = 0;
 List<String> favoQuotes = [];
 List<String> favoQuotesSaved = [];
 
@@ -25,79 +27,69 @@ class QuoteFavo extends StatefulWidget {
 }
 
 class _State extends State<QuoteFavo> {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) => loadData());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromRGBO(234, 203, 203, 1),
         body: Padding(
           padding: const EdgeInsets.symmetric(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 100),
-                  IconButton(
-                    iconSize: 30.0,
-                    alignment: Alignment.topLeft,
-                    tooltip: 'Go back to the previous Page',
-                    icon: Icon(Icons.backspace),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyApp()));
-                    },
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Back',
-                    style: TextStyle(
-                      fontFamily: 'Quattrocento',
-                      fontSize: 24,
+          child: RefreshIndicator(
+            onRefresh: loadData,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 60),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(),
+                    Text(
+                      'Favorite Quotes:',
+                      style: TextStyle(
+                          fontFamily: 'Quattrocento',
+                          fontSize: 30.0,
+                          color: Colors.black),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(),
-                  Text(
-                    'Favorite Quotes:',
-                    style: TextStyle(
-                        fontFamily: 'Quattrocento',
-                        fontSize: 30.0,
-                        color: Colors.black),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                      child: SizedBox(
-                    height: 500.0,
-                    child: new ListView.builder(
-                        itemCount: favoQuotesSaved.length,
-                        itemBuilder: (BuildContext ctxt, index) {
-                          return Card(
-                            child: ListTile(
-                              onTap: () {},
-                              title: new Text(
-                                favoQuotesSaved[index],
-                                style: TextStyle(
-                                    fontFamily: 'Quattrocento', fontSize: 20),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                        child: SizedBox(
+                      height: 485.0,
+                      child: new ListView.builder(
+                          itemCount: favoQuotesSaved.length,
+                          itemBuilder: (BuildContext ctxt, index) {
+                            return Card(
+                              child: ListTile(
+                                onTap: () {},
+                                title: new Text(
+                                  favoQuotesSaved[index],
+                                  style: TextStyle(
+                                      fontFamily: 'Quattrocento', fontSize: 20),
+                                ),
                               ),
-                            ),
-                          );
-                        }),
-                  ))
-                ],
-              ),
-              SizedBox(height: 30),
-              Favorite(),
-            ],
+                            );
+                          }),
+                    ))
+                  ],
+                ),
+                SizedBox(height: 10),
+                Favorite(),
+              ],
+            ),
           ),
         ));
   }
@@ -119,8 +111,7 @@ class _FavoriteState extends State<Favorite> {
     });
   }
 
-  //
-  void saveData1() async {
+  void saveList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setStringList('Quote', favoQuotes);
@@ -135,7 +126,8 @@ class _FavoriteState extends State<Favorite> {
         ElevatedButton.icon(
           onPressed: () {
             deleteListContent(favoQuotes);
-            saveData1();
+            saveList();
+            delete = 2;
           },
           icon: Icon(
             Icons.delete_forever,
