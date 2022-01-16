@@ -20,6 +20,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyApp(),
+      color: Colors.black,
     );
   }
 }
