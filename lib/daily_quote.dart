@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quotes_app/functions.dart';
+import 'package:quotes_app/quotes_model.dart';
 import 'package:quotes_app/splash.dart';
 import 'package:quotes_app/favourite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+late String _randomQuote;
+late String _randomQuoteAuthor;
+bool _isFavo = false;
 
 class Quo extends StatelessWidget {
   @override
@@ -23,19 +30,17 @@ class DailyQuote extends StatefulWidget {
 }
 
 class _DailyQuoteState extends State<DailyQuote> {
+  late Future<Quotes> futureQuotes;
+
+  @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) => getRandomQuote());
-  }
-
-  String getRandomQuote() {
-    String _randomQuote = randomChoice(quotes);
-    return _randomQuote;
+    futureQuotes = fetchQuotes();
+    _isFavo = false;
   }
 
   // ignore: non_constant_identifier_namesg
-  final _randomQuote = randomChoice(quotes);
-  void saveData(String pQuote) async {
+  void saveData(String pQuote, String pAuthor) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (pQuote == "1") {
       favoQuotes.remove(pQuote);
@@ -59,16 +64,7 @@ class _DailyQuoteState extends State<DailyQuote> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 100),
-                IconButton(
-                    iconSize: 30.0,
-                    alignment: Alignment.topLeft,
-                    tooltip: 'Go back to the previous Page!',
-                    icon: Icon(Icons.backspace),
-                    onPressed: () {}),
-                SizedBox(width: 10),
-                Text("Back",
-                    style: TextStyle(fontFamily: 'Quattrocento', fontSize: 24)),
+                SizedBox(height: 110),
               ],
             ),
             Row(
@@ -76,19 +72,63 @@ class _DailyQuoteState extends State<DailyQuote> {
               children: [
                 SizedBox(
                   width: 317,
-                  height: 200,
+                  height: 180,
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: 317,
-                        height: 115,
-                        child: Text(
-                          '$_randomQuote',
-                          style: TextStyle(
-                            fontFamily: 'Quattrocento',
-                            fontSize: 24,
+                      Center(
+                        child: LimitedBox(
+                          maxWidth: 317,
+                          child: Center(
+                            child: FutureBuilder<Quotes>(
+                                future: futureQuotes,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    _randomQuote = snapshot.data!.content;
+                                    _randomQuoteAuthor = snapshot.data!.author;
+                                    return Column(
+                                      children: [
+                                        Text(
+                                          '$_randomQuote',
+                                          maxLines: 4,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontFamily: 'Quattrocento',
+                                              fontSize: 26),
+                                        ),
+                                        SizedBox(height: 15),
+                                        Text(
+                                          '-$_randomQuoteAuthor',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontFamily: 'Quattrocento',
+                                              fontSize: 26),
+                                        ),
+                                      ],
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    print(snapshot.error);
+                                    return Text(
+                                      '$errorMsg',
+                                      maxLines: 4,
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontFamily: 'Quattrocento',
+                                          fontSize: 26),
+                                    );
+                                  }
+                                  return Transform.scale(
+                                    scale: 0.5,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 7,
+                                      color: Colors.black,
+                                    ),
+                                  );
+                                }),
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],
@@ -96,18 +136,26 @@ class _DailyQuoteState extends State<DailyQuote> {
                 ),
               ],
             ),
+            // SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    saveData(_randomQuote);
+                    _isFavo = true;
+                    if (favoQuotes.contains(_randomQuote)) {
+                      _isFavo = true;
+                    } else {
+                      saveData(_randomQuote, _randomQuoteAuthor);
+                      _showToast(context);
+                    }
                   },
                   icon: Icon(
                     Icons.favorite,
                     color: Colors.black,
                   ),
-                  label: Text('Add To favourite',
+                  label: Text(
+                      _isFavo ? 'Remove from favourite' : 'Add To favourite',
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Prompt',
@@ -120,15 +168,30 @@ class _DailyQuoteState extends State<DailyQuote> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 60),
             Image.asset(
               'assets/images/Sitting_by_tree.png',
               width: 400,
-              height: 110,
+              height: 280,
             )
           ],
         ),
       ),
     );
   }
+}
+
+void _showToast(BuildContext context) {
+  final scaffold = ScaffoldMessenger.of(context);
+  scaffold.showSnackBar(
+    SnackBar(
+      content: const Text('Added to favorite'),
+      action: SnackBarAction(
+          label: 'UNDO',
+          onPressed: () {
+            favoQuotes.remove(_randomQuote);
+            scaffold.hideCurrentSnackBar();
+          }),
+    ),
+  );
 }
