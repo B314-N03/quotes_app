@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'favourite.dart';
-import 'daily_quote.dart';
-import 'functions.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -35,7 +32,7 @@ class _SplashState extends State<Splash> {
             Image.asset(
               'assets/images/Undraw_walking_outside_re_56xo1.png',
               width: 500,
-              height: 350,
+              height: 288,
             ),
             SizedBox(height: 30),
             SizedBox(
@@ -48,20 +45,3 @@ class _SplashState extends State<Splash> {
     );
   }
 }
-
-final quotes = [
-  "The greatest glory in living\n lies not in never falling, but \nin rising every time we fall.\n -Nelson Mandela",
-  "The way to get started is to quit talking and begin doing. \n -Walt Disney",
-  "Love For All, Hatred For None. \n– Khalifatul Masih III",
-  "Change the world by being yourself. \n – Amy Poehler",
-  "Every moment is a fresh beginning.\n – T.S Eliot",
-  "Never regret anything that made you smile.\n – Mark Twain",
-  "Everything you can imagine is real.\n – Pablo Picasso",
-  "Simplicity is the ultimate sophistication.\n – Leonardo da Vinci",
-  "Whatever you do, do it well.\n – Walt Disney",
-  "What we think, we become.\n – Buddha",
-  "All limitations are self-imposed.\n – Oliver Wendell Holmes",
-  "Tough times never last but tough people do.\n – Robert H. Schiuller",
-  "If I’m gonna tell a real story, I’m gonna start with my name.\n – Kendrick Lamar",
-  "Hate comes from intimidation, love comes from appreciation.\n – Tyga",
-];
