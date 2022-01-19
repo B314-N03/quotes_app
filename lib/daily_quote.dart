@@ -3,7 +3,6 @@ import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quotes_app/functions.dart';
 import 'package:quotes_app/quotes_model.dart';
-import 'package:quotes_app/splash.dart';
 import 'package:quotes_app/favourite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
