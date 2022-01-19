@@ -1,8 +1,6 @@
-import 'package:quotes_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'functions.dart';
 import 'package:flutter/material.dart';
-import 'package:quotes_app/main.dart';
 
 int delete = 0;
 List<String> favoQuotes = [];
@@ -68,7 +66,7 @@ class _State extends State<QuoteFavo> {
                   children: <Widget>[
                     Expanded(
                         child: SizedBox(
-                      height: 485.0,
+                      height: 465.0,
                       child: new ListView.builder(
                           itemCount: favoQuotesSaved.length,
                           itemBuilder: (BuildContext ctxt, index) {
@@ -86,7 +84,6 @@ class _State extends State<QuoteFavo> {
                     ))
                   ],
                 ),
-                SizedBox(height: 10),
                 Favorite(),
               ],
             ),
@@ -127,6 +124,9 @@ class _FavoriteState extends State<Favorite> {
           onPressed: () {
             deleteListContent(favoQuotes);
             saveList();
+            setState(() {
+              favoQuotes = favoQuotesSaved;
+            });
             delete = 2;
           },
           icon: Icon(
@@ -138,7 +138,7 @@ class _FavoriteState extends State<Favorite> {
             style: TextStyle(color: Colors.black),
           ),
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(150, 50),
+            fixedSize: Size(100, 20),
             primary: Colors.white,
             shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(33.0),
