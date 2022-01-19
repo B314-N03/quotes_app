@@ -1,9 +1,7 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quotes_app/daily_quote.dart';
 import 'package:quotes_app/favourite.dart';
-import 'package:quotes_app/functions.dart';
 import 'package:quotes_app/settings.dart';
 import 'package:quotes_app/splash.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
